@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Stručnost | počinje s kvalifikacijama",
+    "description": "Međunarodni institut za klimatske aktivnosti (IICA) – ESG edukacija i certifikacija."
+  },
+  "nav": {
+    "home": "POČETNA",
+    "register": "EDUKACIJA",
+    "awards": "ESG AWARDS",
+    "board": "UPRAVA",
+    "contact": "KONTAKT"
+  },
+  "footer": {
+    "explore": "Istraži",
+    "home": "Početna",
+    "register": "Edukacija",
+    "esg": "ESG",
+    "qualifications": "Kvalifikacije",
+    "candidates": "Kandidati",
+    "board": "Uprava",
+    "awards": "ESG Awards",
+    "contact": "Kontakt",
+    "privacy": "Privatnost",
+    "newsletter": "Newsletter",
+    "email": "E-pošta",
+    "org": "Međunarodni institut za klimatske aktivnosti",
+    "street": "Pantovčak 41/3,",
+    "city": "10000 Zagreb",
+    "country": "Hrvatska",
+    "copyright": "© IICA-ESG"
+  },
+  "forms": {
+    "send": "Pošalji",
+    "apply": "PRIJAVI SE",
+    "success": "Hvala, uspješno smo zaprimili vašu prijavu.",
+    "privacyPrefix": "pročitao/la sam i slažem se s",
+    "privacyLink": "pravilima privatnosti",
+    "newsletterConsent": "Želim primati 'IICA ESG' Newsletter. Od njega se mogu bilo kada odjaviti."
+  }
+}

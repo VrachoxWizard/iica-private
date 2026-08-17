@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# GitHub rejects files over 100MB
+/public/wp-content/uploads/2021/09/iica-iase.mp4

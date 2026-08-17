@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Expertise | starts with qualifications",
+    "description": "International Institute for Climate Action (IICA) – ESG education and certification."
+  },
+  "nav": {
+    "home": "HOME",
+    "register": "EDUCATION",
+    "awards": "ESG AWARDS",
+    "board": "BOARD",
+    "contact": "CONTACT"
+  },
+  "footer": {
+    "explore": "Explore",
+    "home": "Home",
+    "register": "Education",
+    "esg": "ESG",
+    "qualifications": "Qualifications",
+    "candidates": "Candidates",
+    "board": "Board",
+    "awards": "ESG Awards",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "newsletter": "Newsletter",
+    "email": "Email",
+    "org": "International Institute for Climate Action",
+    "street": "Pantovčak 41/3,",
+    "city": "10 000 Zagreb",
+    "country": "Republic of Croatia",
+    "copyright": "© IICA-ESG"
+  },
+  "forms": {
+    "send": "Send",
+    "apply": "SIGN UP",
+    "success": "Thank you, we have successfully received your application.",
+    "privacyPrefix": "I have read and agree to the",
+    "privacyLink": "privacy policy",
+    "newsletterConsent": "I want to receive the IICA ESG Newsletter. I can unsubscribe at any time."
+  }
+}
