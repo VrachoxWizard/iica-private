@@ -15,7 +15,7 @@ export default async function AwardsPage({ params }: Props) {
     <>
       <AwardsForm locale={loc} />
       <section className="section awards-content">
-        <div className="page-content">
+        <div className="page-content reveal">
           {copy.body.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}

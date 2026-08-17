@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/routing";
 
 export function Header() {
   const t = useTranslations("nav");
+  const a11y = useTranslations("a11y");
   const locale = useLocale() as Locale;
   const pathname = usePathname();
   const params = useParams();
@@ -28,8 +29,30 @@ export function Header() {
       ? "/board"
       : (pathname as Exclude<typeof pathname, "/board/[slug]">);
 
+  useEffect(() => {
+    if (!open) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  function navClass(href: string, extra = "") {
+    const current = href === "/" ? pathname === "/" : pathname.startsWith(href);
+    return `navbar-item nav-caps${extra}${current ? " is-current" : ""}`;
+  }
+
   return (
     <header className="site-header">
+      {open ? (
+        <button
+          type="button"
+          className="nav-overlay"
+          aria-label={a11y("close")}
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <Link className="navbar-item p-3" href="/" onClick={() => setOpen(false)}>
@@ -38,7 +61,7 @@ export function Header() {
           <button
             type="button"
             className={`navbar-burger burger${open ? " is-active" : ""}`}
-            aria-label="menu"
+            aria-label={a11y("menu")}
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
           >
@@ -49,26 +72,57 @@ export function Header() {
         </div>
         <div id="navbarBasicExample" className={`navbar-menu${open ? " is-active" : ""}`}>
           <div className="navbar-end">
-            <Link className={`navbar-item nav-caps${pathname === "/" ? " is-current" : ""}`} href="/" onClick={() => setOpen(false)}>
+            <Link
+              className={navClass("/")}
+              href="/"
+              aria-current={pathname === "/" ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {t("home")}
             </Link>
-            <Link className={`navbar-item nav-caps${pathname === "/prijava" ? " is-current" : ""}`} href="/prijava" onClick={() => setOpen(false)}>
+            <Link
+              className={navClass("/prijava")}
+              href="/prijava"
+              aria-current={pathname === "/prijava" ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {t("register")}
             </Link>
-            <Link className={`navbar-item nav-caps easyNav2${pathname === "/esg-awards" ? " is-current" : ""}`} href="/esg-awards" onClick={() => setOpen(false)}>
+            <Link
+              className={navClass("/esg-awards", " easyNav2")}
+              href="/esg-awards"
+              aria-current={pathname === "/esg-awards" ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {t("awards")}
             </Link>
-            <Link className={`navbar-item nav-caps${pathname.startsWith("/board") ? " is-current" : ""}`} href="/board" onClick={() => setOpen(false)}>
+            <Link
+              className={navClass("/board")}
+              href="/board"
+              aria-current={pathname.startsWith("/board") ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {t("board")}
             </Link>
-            <Link className={`navbar-item nav-caps${pathname === "/kontakt" ? " is-current" : ""}`} href="/kontakt" onClick={() => setOpen(false)}>
+            <Link
+              className={navClass("/kontakt")}
+              href="/kontakt"
+              aria-current={pathname === "/kontakt" ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {t("contact")}
             </Link>
             <div className="navbar-item lang-flag">
-              <Link className="navbar-item" href={languageHref} locale={otherLocale}>
+              <Link
+                className="navbar-item"
+                href={languageHref}
+                locale={otherLocale}
+                aria-label={otherLocale === "en" ? a11y("langEn") : a11y("langHr")}
+                onClick={() => setOpen(false)}
+              >
                 <img
                   src={otherLocale === "en" ? assets.enFlag : assets.hrFlag}
-                  alt={otherLocale === "en" ? "English" : "Hrvatski"}
+                  alt=""
                 />
               </Link>
             </div>

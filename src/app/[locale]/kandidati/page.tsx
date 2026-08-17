@@ -22,7 +22,7 @@ export default async function CandidatesPage({ params }: Props) {
 
   return (
     <>
-      <PageHero title={copy.hero} image={assets.heroIntro} />
+      <PageHero title={copy.hero} image={assets.heroIntro} kicker={copy.title} />
       <section className="section">
         <div className="column is-10-desktop is-offset-1-desktop round-cor p-6">
           <h2 className="is-size-2-tablet has-text-centered mb-5">
@@ -59,7 +59,7 @@ export default async function CandidatesPage({ params }: Props) {
           ) : (
             <a id={jumpIds[index] ?? section.title} />
           )}
-          <section className={`section${backgrounds[index] ? " up-mrg" : ""}`}>
+          <section className={`section candidate-block${backgrounds[index] ? " up-mrg" : ""}`}>
             <div className="column is-10-desktop is-offset-1-desktop has-background-white round-cor p-6">
               <h2 className="has-text-centered mb-5">
                 <strong>{section.title}</strong>

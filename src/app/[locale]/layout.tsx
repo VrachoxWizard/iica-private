@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Figtree } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Header } from "@/components/Header";
@@ -42,14 +42,20 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale as "hr" | "en");
   const messages = await getMessages();
+  const a11y = await getTranslations("a11y");
 
   return (
     <html lang={locale} className={`${display.variable} ${sans.variable}`}>
       <body>
         <NextIntlClientProvider messages={messages}>
+          <a className="skip-link" href="#main-content">
+            {a11y("skip")}
+          </a>
           <div className="site-shell">
             <Header />
-            <main>{children}</main>
+            <main id="main-content" className="site-main">
+              {children}
+            </main>
             <Footer locale={locale} />
           </div>
         </NextIntlClientProvider>

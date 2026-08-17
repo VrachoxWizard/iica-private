@@ -33,8 +33,21 @@
     "send": "Send",
     "apply": "SIGN UP",
     "success": "Thank you, we have successfully received your application.",
+    "again": "Send another",
+    "email": "Email",
     "privacyPrefix": "I have read and agree to the",
     "privacyLink": "privacy policy",
     "newsletterConsent": "I want to receive the IICA ESG Newsletter. I can unsubscribe at any time."
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "close": "Close",
+    "menu": "Menu",
+    "langEn": "Switch to English",
+    "langHr": "Switch to Croatian",
+    "prev": "Previous",
+    "next": "Next",
+    "backBoard": "Back to the board",
+    "play": "Play video"
   }
 }

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { pages } from "@/content/pages";
 import { assets } from "@/content/home";
 import type { Locale } from "@/i18n/routing";
+import { Field, FormSuccess } from "@/components/Field";
 
 export function AwardsForm({
   locale,
@@ -30,15 +31,14 @@ export function AwardsForm({
   return (
     <section className="awards-hero">
       <img className="obj-fit-cover" src={assets.heroAwards} alt="" />
+      <div className="hero-shade" />
       <div className="custom_Card" style={{ position: "relative", zIndex: 1 }}>
         <div className="card-body">
           {variant === "awards" ? (
             <>
               <h2>{pages[locale].awards.heroTitle}</h2>
               <p>{pages[locale].awards.prerequisite}</p>
-              <p>
-                <strong>{pages[locale].awards.closed}</strong>
-              </p>
+              <p className="awards-closed">{pages[locale].awards.closed}</p>
               <p>{pages[locale].awards.follow}</p>
             </>
           ) : (
@@ -48,16 +48,29 @@ export function AwardsForm({
             </>
           )}
           {sent ? (
-            <div className="success-message is-visible">{t("success")}</div>
+            <FormSuccess
+              message={t("success")}
+              actionLabel={t("again")}
+              onReset={() => setSent(false)}
+            />
           ) : (
-            <form id="awardsForm" className="needs-validation" noValidate onSubmit={onSubmit}>
-              <input name="customerName" required placeholder={copy.customerName} />
-              <input name="institutionName" required placeholder={copy.institutionName} />
-              <input name="email" type="email" required placeholder={copy.email} />
-              <input name="oib" required placeholder={copy.oib} />
-              <input name="address" required placeholder={copy.address} />
-              <input name="awardDocument" type="file" aria-label={copy.file} />
-              <button className="buttonHero_Green" type="submit">
+            <form id="awardsForm" className="awards-form needs-validation" noValidate onSubmit={onSubmit}>
+              <Field label={copy.customerName} name="customerName" required />
+              <Field label={copy.institutionName} name="institutionName" required />
+              <Field label={copy.email} name="email" type="email" required />
+              <Field label={copy.oib} name="oib" required />
+              <Field label={copy.address} name="address" required />
+              <div className="field-block">
+                <label htmlFor="awardDocument">{copy.file}</label>
+                <input
+                  id="awardDocument"
+                  name="awardDocument"
+                  type="file"
+                  className="file-input"
+                  aria-label={copy.file}
+                />
+              </div>
+              <button className="cta-btn" type="submit">
                 {t("apply")}
               </button>
             </form>

@@ -2,18 +2,16 @@
 
 import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
-import { getHome } from "@/content/home";
 import type { Locale } from "@/i18n/routing";
+import { Field, FormSuccess } from "@/components/Field";
 
 export function NewsletterForm({
-  locale,
   compact = false,
 }: {
   locale: Locale;
   compact?: boolean;
 }) {
   const t = useTranslations("forms");
-  const home = getHome(locale);
   const [sent, setSent] = useState(false);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -26,26 +24,26 @@ export function NewsletterForm({
     setSent(true);
   }
 
-  if (sent) {
-    return <div className="success-message is-visible">{t("success")}</div>;
-  }
-
   return (
     <form
       className={`newsletter-form${compact ? " is-compact" : ""}`}
       noValidate
       onSubmit={onSubmit}
     >
-      <input
-        name="email"
-        type="email"
-        placeholder={home.emailPlaceholder}
-        aria-label="Email"
-        required
-      />
-      <button type="submit" className="cta-btn">
-        {t("apply")}
-      </button>
+      {sent ? (
+        <FormSuccess
+          message={t("success")}
+          actionLabel={t("again")}
+          onReset={() => setSent(false)}
+        />
+      ) : (
+        <>
+          <Field label={t("email")} name="email" type="email" required />
+          <button type="submit" className="cta-btn">
+            {t("apply")}
+          </button>
+        </>
+      )}
     </form>
   );
 }

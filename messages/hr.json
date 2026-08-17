@@ -33,8 +33,21 @@
     "send": "Pošalji",
     "apply": "PRIJAVI SE",
     "success": "Hvala, uspješno smo zaprimili vašu prijavu.",
+    "again": "Pošalji još jednu",
+    "email": "Email",
     "privacyPrefix": "pročitao/la sam i slažem se s",
     "privacyLink": "pravilima privatnosti",
     "newsletterConsent": "Želim primati 'IICA ESG' Newsletter. Od njega se mogu bilo kada odjaviti."
+  },
+  "a11y": {
+    "skip": "Preskoči na sadržaj",
+    "close": "Zatvori",
+    "menu": "Izbornik",
+    "langEn": "Switch to English",
+    "langHr": "Prijeđi na hrvatski",
+    "prev": "Prethodno",
+    "next": "Sljedeće",
+    "backBoard": "Natrag na upravu",
+    "play": "Pokreni video"
   }
 }

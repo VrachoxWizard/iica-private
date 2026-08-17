@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
@@ -10,6 +10,8 @@ import {
   type EducationCard,
 } from "@/content/education";
 import type { Locale } from "@/i18n/routing";
+import { Modal } from "@/components/Modal";
+import { Field, FormSuccess } from "@/components/Field";
 
 const WEEKDAYS = {
   hr: ["P", "U", "S", "Č", "P", "S", "N"],
@@ -25,6 +27,7 @@ function monthLabel(locale: Locale, year: number, month: number) {
 
 export function EducationHub({ locale }: { locale: Locale }) {
   const t = useTranslations("forms");
+  const a11y = useTranslations("a11y");
   const data = getEducation(locale);
   const next = getNextCourse(locale);
   const initial = next ?? data.courses[0];
@@ -35,6 +38,11 @@ export function EducationHub({ locale }: { locale: Locale }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [entity, setEntity] = useState<"individual" | "company">("individual");
   const [sent, setSent] = useState(false);
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    setSent(false);
+  }, []);
 
   const byDay = useMemo(() => {
     const map = new Map<string, EducationCard[]>();
@@ -86,11 +94,11 @@ export function EducationHub({ locale }: { locale: Locale }) {
       <div className="edu-layout">
         <div className="edu-calendar">
           <div className="edu-cal-nav">
-            <button type="button" onClick={() => shiftMonth(-1)} aria-label="Previous month">
+            <button type="button" onClick={() => shiftMonth(-1)} aria-label={a11y("prev")}>
               ‹
             </button>
             <strong>{monthLabel(locale, year, month)}</strong>
-            <button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">
+            <button type="button" onClick={() => shiftMonth(1)} aria-label={a11y("next")}>
               ›
             </button>
           </div>
@@ -163,91 +171,102 @@ export function EducationHub({ locale }: { locale: Locale }) {
         </aside>
       </div>
 
-      {modalOpen ? (
-        <div className="modal-backdrop" role="dialog" aria-modal="true">
-          <div className="reg-modal">
-            <button type="button" className="close" onClick={() => { setModalOpen(false); setSent(false); }}>
-              ×
-            </button>
-            {sent ? (
-              <div className="success-message is-visible">{t("success")}</div>
-            ) : (
-              <form className="reg-form" noValidate onSubmit={onSubmit}>
-                <p className="edu-kicker">{selected.level}</p>
-                <h2>{t("apply")}</h2>
-                <p>
-                  {selected.title} · {selected.start} – {selected.end} ·{" "}
-                  {selected.price.replace(/^Cijena:\s|^Price:\s/, "")}
-                </p>
-                <fieldset>
-                  <legend>{data.entityLabel}</legend>
-                  <label>
-                    <input
-                      type="radio"
-                      name="entityType"
-                      checked={entity === "individual"}
-                      onChange={() => setEntity("individual")}
-                    />
-                    {locale === "hr" ? "Fizička osoba" : "Individual"}
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="entityType"
-                      checked={entity === "company"}
-                      onChange={() => setEntity("company")}
-                    />
-                    {locale === "hr" ? "Pravna osoba" : "Organisation"}
-                  </label>
-                </fieldset>
-                {entity === "individual" ? (
-                  <div className="reg-grid">
-                    <input name="firstName" required placeholder={data.firstName} />
-                    <input name="lastName" required placeholder={data.lastName} />
-                    <input name="userMail" type="email" required placeholder={data.userMail} />
-                    <label className="reg-check">
-                      <input type="checkbox" name="educationDirection" defaultChecked />
-                      {data.business}
-                    </label>
-                    <label className="reg-check">
-                      <input type="checkbox" name="educationDirectionFinance" />
-                      {data.finance}
-                    </label>
-                  </div>
-                ) : (
-                  <div className="reg-grid">
-                    <input name="companyName" required placeholder={data.companyName} />
-                    <input name="companyEmail" type="email" required placeholder={data.companyEmail} />
-                    <input name="address" required placeholder={data.address} />
-                    <input name="oib" required placeholder={data.oib} />
-                    <textarea
-                      name="candidatesData"
-                      required
-                      placeholder={data.candidatesPlaceholder}
-                      rows={3}
-                    />
-                  </div>
-                )}
+      <Modal
+        open={modalOpen}
+        onClose={closeModal}
+        labelledBy="reg-title"
+        className="reg-modal"
+      >
+        <button type="button" className="close" onClick={closeModal} aria-label={a11y("close")}>
+          ×
+        </button>
+        {sent ? (
+          <>
+            <h2 id="reg-title" className="visually-hidden">
+              {t("success")}
+            </h2>
+            <FormSuccess
+              message={t("success")}
+              actionLabel={t("again")}
+              onReset={() => setSent(false)}
+            />
+          </>
+        ) : (
+          <form className="reg-form" noValidate onSubmit={onSubmit}>
+            <p className="edu-kicker">{selected.level}</p>
+            <h2 id="reg-title">{t("apply")}</h2>
+            <p>
+              {selected.title} · {selected.start} – {selected.end} ·{" "}
+              {selected.price.replace(/^Cijena:\s|^Price:\s/, "")}
+            </p>
+            <fieldset>
+              <legend>{data.entityLabel}</legend>
+              <label>
+                <input
+                  type="radio"
+                  name="entityType"
+                  checked={entity === "individual"}
+                  onChange={() => setEntity("individual")}
+                />
+                {locale === "hr" ? "Fizička osoba" : "Individual"}
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="entityType"
+                  checked={entity === "company"}
+                  onChange={() => setEntity("company")}
+                />
+                {locale === "hr" ? "Pravna osoba" : "Organisation"}
+              </label>
+            </fieldset>
+            {entity === "individual" ? (
+              <div className="reg-grid">
+                <Field label={data.firstName} name="firstName" required />
+                <Field label={data.lastName} name="lastName" required />
+                <Field label={data.userMail} name="userMail" type="email" required />
                 <label className="reg-check">
-                  <input type="checkbox" name="privacy" required />
-                  <span>
-                    {t("privacyPrefix")}{" "}
-                    <Link href="/pravila-privatnosti" target="_blank">
-                      {t("privacyLink")}
-                    </Link>
-                  </span>
+                  <input type="checkbox" name="educationDirection" defaultChecked />
+                  {data.business}
                 </label>
-                <input type="hidden" name="level" value={selected.level} />
-                <input type="hidden" name="startDate" value={selected.start} />
-                <input type="hidden" name="endDate" value={selected.end} />
-                <button className="cta-btn" type="submit">
-                  {t("send")}
-                </button>
-              </form>
+                <label className="reg-check">
+                  <input type="checkbox" name="educationDirectionFinance" />
+                  {data.finance}
+                </label>
+              </div>
+            ) : (
+              <div className="reg-grid">
+                <Field label={data.companyName} name="companyName" required />
+                <Field label={data.companyEmail} name="companyEmail" type="email" required />
+                <Field label={data.address} name="address" required />
+                <Field label={data.oib} name="oib" required />
+                <Field
+                  label={data.candidates}
+                  name="candidatesData"
+                  as="textarea"
+                  required
+                  rows={3}
+                />
+              </div>
             )}
-          </div>
-        </div>
-      ) : null}
+            <label className="reg-check">
+              <input type="checkbox" name="privacy" required />
+              <span>
+                {t("privacyPrefix")}{" "}
+                <Link href="/pravila-privatnosti" target="_blank">
+                  {t("privacyLink")}
+                </Link>
+              </span>
+            </label>
+            <input type="hidden" name="level" value={selected.level} />
+            <input type="hidden" name="startDate" value={selected.start} />
+            <input type="hidden" name="endDate" value={selected.end} />
+            <button className="cta-btn" type="submit">
+              {t("send")}
+            </button>
+          </form>
+        )}
+      </Modal>
     </div>
   );
 }

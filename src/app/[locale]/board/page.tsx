@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { PageHero } from "@/components/PageHero";
 import { getBoardGroups } from "@/content/board";
 import { asLocale } from "@/lib/locale";
 
@@ -13,12 +14,11 @@ export default async function BoardPage({ params }: Props) {
 
   return (
     <>
-      <section className="section" id="tko">
+      <PageHero title={data.copy.title} />
+      <section className="section board board-section" id="tko">
         <h2 className="is-size-2 has-text-centered mb-5">
           <strong>{data.copy.governors}</strong>
         </h2>
-      </section>
-      <section className="section board">
         <div className="columns">
           {data.governors.map((member) => (
             <div className="column is-one-third" key={member.id}>
@@ -30,9 +30,7 @@ export default async function BoardPage({ params }: Props) {
                   </Link>
                 </div>
                 <div className="card-content">
-                  <p className="is-size-6">
-                    <strong>{member.role[loc]}</strong>
-                  </p>
+                  <p className="edu-kicker">{member.role[loc]}</p>
                   {member.bio[loc].map((line) => (
                     <p key={line}>{line}</p>
                   ))}
@@ -54,9 +52,7 @@ export default async function BoardPage({ params }: Props) {
                   </Link>
                 </div>
                 <div className="card-content">
-                  <p className="is-size-6">
-                    <strong>{member.role[loc]}</strong>
-                  </p>
+                  <p className="edu-kicker">{member.role[loc]}</p>
                   {member.bio[loc].map((line) => (
                     <p key={line}>{line}</p>
                   ))}
@@ -65,7 +61,6 @@ export default async function BoardPage({ params }: Props) {
             </div>
           ))}
         </div>
-        <h2 className="has-text-centered">{data.copy.secretariat}</h2>
       </section>
     </>
   );

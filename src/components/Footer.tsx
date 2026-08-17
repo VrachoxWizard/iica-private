@@ -13,7 +13,7 @@ export async function Footer({ locale }: { locale: string }) {
       <div className="site-footer-grid">
         <div>
           <a href="http://www.iica-hr.eu/en/" target="_blank" rel="noreferrer">
-            <img className="footer-mark" src={assets.logo} alt="IICA" />
+            <img className="footer-mark" src={assets.footerLogo} alt="IICA" />
           </a>
           <p>{t("org")}</p>
           <p>

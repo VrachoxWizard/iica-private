@@ -14,7 +14,7 @@ export default async function QualificationsPage({ params }: Props) {
 
   return (
     <>
-      <PageHero image={assets.heroQual} />
+      <PageHero title={copy.title} image={assets.heroQual} />
       <section className="section">
         <div className="column is-10-desktop is-offset-1-desktop round-cor page-content">
           <h2 className="intro-hero-title">{copy.hero}</h2>
@@ -23,7 +23,8 @@ export default async function QualificationsPage({ params }: Props) {
           ))}
           <h2 className="has-text-centered accent">{copy.officerTitle}</h2>
           {copy.levels.map((level, index) => (
-            <article className="qual-level" key={index}>
+            <article className="qual-level reveal" key={index}>
+              <span className="qual-num">0{index + 1}</span>
               <p>{level.intro}</p>
               <ul>
                 {level.items.map((item) => (

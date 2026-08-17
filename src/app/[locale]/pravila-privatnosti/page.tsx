@@ -15,7 +15,7 @@ export default async function PrivacyPage({ params }: Props) {
     <>
       <PageHero title={copy.title} />
       <section className="section">
-        <div className="privacy-page page-content">
+        <div className="privacy-page page-content reveal">
           {copy.blocks.map((block) => (
             <article key={block.heading}>
               <h2>{block.heading}</h2>

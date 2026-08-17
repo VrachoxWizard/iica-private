@@ -15,7 +15,7 @@ export default async function WglcPage({ params }: Props) {
     <>
       <AwardsForm locale={loc} variant="wglc" />
       <section className="section awards-content">
-        <div className="page-content">
+        <div className="page-content reveal">
           <p>{copy.intro}</p>
           <h2>{copy.includesTitle}</h2>
           <ul>
