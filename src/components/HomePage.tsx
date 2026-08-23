@@ -7,6 +7,7 @@ import { assets, getHome } from "@/content/home";
 import { getNextCourse } from "@/content/education";
 import { EducationCarousel } from "@/components/EducationCarousel";
 import { Testimonials } from "@/components/Testimonials";
+import { WelcomeModal } from "@/components/WelcomeModal";
 import { Modal } from "@/components/Modal";
 import type { Locale } from "@/i18n/routing";
 
@@ -17,7 +18,6 @@ export function HomePage({ locale }: { locale: Locale }) {
   const next = getNextCourse(locale);
   const a11y = useTranslations("a11y");
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
 
   const closeWelcome = useCallback(() => {
@@ -35,44 +35,12 @@ export function HomePage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <Modal
-        open={modalOpen}
-        onClose={closeWelcome}
-        labelledBy="welcome-title"
-        className="welcome-modal"
-      >
-        <div className="welcome-media">
-          <img src={assets.modal} alt="" />
-        </div>
-        <div className="welcome-copy">
-          <button type="button" className="close" onClick={closeWelcome} aria-label={a11y("close")}>
-            ×
-          </button>
-          <p className="edu-kicker">{home.modalKicker}</p>
-          <h2 id="welcome-title">{home.modalTitle}</h2>
-          <p>{home.modalLead}</p>
-          <div className="welcome-tracks">
-            {home.modalCourses.map((course, index) => (
-              <button
-                type="button"
-                key={course}
-                className={index === selectedCourse ? "is-active" : ""}
-                onClick={() => setSelectedCourse(index)}
-              >
-                {course}
-              </button>
-            ))}
-          </div>
-          <Link href="/prijava" className="cta-btn" onClick={closeWelcome}>
-            {home.modalCta}
-          </Link>
-        </div>
-      </Modal>
+      <WelcomeModal locale={locale} open={modalOpen} onClose={closeWelcome} />
 
-      <section className="hero-cta">
+      <section className="hero-cta hero-cta-home">
         <img className="obj-fit-cover" src={assets.hero} alt="" />
         <div className="hero-shade" />
-        <div className="hero-cta-inner">
+        <div className="hero-cta-stack">
           <div className="hero-headline">
             <p className="edu-kicker hero-kicker">{home.modalKicker}</p>
             <h1>{home.hero}</h1>

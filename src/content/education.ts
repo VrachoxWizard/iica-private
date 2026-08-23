@@ -274,6 +274,14 @@ export function getUpcomingCourses(locale: Locale, limit = 5, now = new Date()) 
     .slice(0, limit);
 }
 
+export function getNextCourseByTrack(
+  locale: Locale,
+  track: EducationCard["track"],
+  now = new Date(),
+) {
+  return getUpcomingCourses(locale, 100, now).find((course) => course.track === track);
+}
+
 export function getNextCourse(locale: Locale, now = new Date()) {
   return getUpcomingCourses(locale, 1, now)[0];
 }

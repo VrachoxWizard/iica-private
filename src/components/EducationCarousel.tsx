@@ -14,12 +14,13 @@ import type { Locale } from "@/i18n/routing";
 
 const EARLY_BIRD_DEADLINE = new Date("2026-09-30T23:59:59");
 const SPOTS = [14, 11, 9, 7, 5];
+const VISIBLE_COUNT = 3;
 
-function trackLabel(locale: Locale, track: EducationCard["track"]) {
+function trackShortLabel(locale: Locale, track: EducationCard["track"]) {
   const data = getEducation(locale);
   if (track === "level1") return data.level1;
   if (track === "level2") return data.level2;
-  return data.ceo;
+  return locale === "hr" ? "CEO" : "CEO";
 }
 
 function Countdown({ locale, label }: { locale: Locale; label: string }) {
@@ -41,14 +42,25 @@ function Countdown({ locale, label }: { locale: Locale; label: string }) {
 
   return (
     <div className="early-bird-countdown">
-      <span>{label}</span>
-      <strong>
-        {days}
-        {home.days} {hours}
-        {home.hours} {minutes}
-        {home.minutes} {seconds}
-        {home.seconds}
-      </strong>
+      <span className="early-bird-countdown-label">{label}</span>
+      <div className="early-bird-countdown-values">
+        <span>
+          {days}
+          {home.days}
+        </span>
+        <span>
+          {hours}
+          {home.hours}
+        </span>
+        <span>
+          {minutes}
+          {home.minutes}
+        </span>
+        <span>
+          {seconds}
+          {home.seconds}
+        </span>
+      </div>
     </div>
   );
 }
@@ -59,43 +71,62 @@ export function EducationCarousel({ locale }: { locale: Locale }) {
   const courses = useMemo(() => getUpcomingCourses(locale, 5), [locale]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [offset, setOffset] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(VISIBLE_COUNT);
 
-  const visibleCount = 3;
   const maxOffset = Math.max(0, courses.length - visibleCount);
+
+  useEffect(() => {
+    function updateVisibleCount() {
+      if (window.innerWidth <= 680) setVisibleCount(1);
+      else if (window.innerWidth <= 900) setVisibleCount(2);
+      else setVisibleCount(VISIBLE_COUNT);
+    }
+
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
 
   useEffect(() => {
     setSelectedIndex(0);
     setOffset(0);
-  }, [courses.length]);
+  }, [courses.length, visibleCount]);
 
-  const shift = useCallback(
-    (delta: number) => {
-      setOffset((current) => {
-        const next = Math.min(maxOffset, Math.max(0, current + delta));
-        return next;
-      });
-    },
-    [maxOffset],
-  );
+  useEffect(() => {
+    if (selectedIndex < offset) setOffset(selectedIndex);
+    else if (selectedIndex >= offset + visibleCount) setOffset(selectedIndex - visibleCount + 1);
+  }, [selectedIndex, offset, visibleCount]);
+
+  function shift(delta: number) {
+    setOffset((current) => Math.min(maxOffset, Math.max(0, current + delta)));
+  }
 
   if (courses.length === 0) return null;
 
   const selected = courses[selectedIndex] ?? courses[0];
+  const cardStep = `calc((100% - ${(visibleCount - 1) * 0.75}rem) / ${visibleCount})`;
 
   return (
     <div className="hero-edu-carousel">
       <div className="early-bird-banner">
-        <span className="early-bird-badge">{home.earlyBird}</span>
-        <span className="early-bird-spots">
-          {SPOTS[selectedIndex] ?? 8} {home.spotsRemaining}
-        </span>
+        <div className="early-bird-primary">
+          <span className="early-bird-badge">{home.earlyBird}</span>
+          <span className="early-bird-spots">
+            {SPOTS[selectedIndex] ?? 8} {home.spotsRemaining}
+          </span>
+        </div>
         <Countdown locale={locale} label={home.discountEnds} />
       </div>
 
       <div className="edu-carousel-viewport">
         <div
           className="edu-carousel-track"
-          style={{ "--offset": offset } as CSSProperties}
+          style={
+            {
+              "--offset": offset,
+              "--card-step": cardStep,
+            } as CSSProperties
+          }
         >
           {courses.map((course, index) => {
             const coursePrice = course.price.replace(/^Cijena:\s|^Price:\s/, "");
@@ -107,11 +138,11 @@ export function EducationCarousel({ locale }: { locale: Locale }) {
                 onClick={() => setSelectedIndex(index)}
               >
                 <span className={`edu-carousel-cat cat-${course.track}`}>
-                  {trackLabel(locale, course.track)}
+                  {trackShortLabel(locale, course.track)}
                 </span>
-                <strong>{course.level}</strong>
-                <span>{course.start}</span>
-                <span>{coursePrice}</span>
+                <strong className="edu-carousel-title">{course.title}</strong>
+                <span className="edu-carousel-date">{course.start}</span>
+                <span className="edu-carousel-price">{coursePrice}</span>
               </button>
             );
           })}
@@ -128,6 +159,9 @@ export function EducationCarousel({ locale }: { locale: Locale }) {
           >
             ‹
           </button>
+          <span className="edu-carousel-indicator">
+            {selectedIndex + 1} / {courses.length}
+          </span>
           <button
             type="button"
             onClick={() => shift(1)}
@@ -139,10 +173,12 @@ export function EducationCarousel({ locale }: { locale: Locale }) {
         </div>
       ) : null}
 
-      <p className="edu-carousel-desc">{courseDescription(locale, selected)}</p>
-      <Link href="/prijava" className="cta-btn edu-carousel-cta">
-        {home.modalCta}
-      </Link>
+      <div className="edu-carousel-footer">
+        <p className="edu-carousel-desc">{courseDescription(locale, selected)}</p>
+        <Link href="/prijava" className="cta-btn edu-carousel-cta">
+          {home.modalCta}
+        </Link>
+      </div>
     </div>
   );
 }
