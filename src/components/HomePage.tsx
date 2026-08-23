@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { assets, getHome } from "@/content/home";
-import { courseDescription, getNextCourse } from "@/content/education";
+import { getNextCourse } from "@/content/education";
+import { EducationCarousel } from "@/components/EducationCarousel";
 import { Testimonials } from "@/components/Testimonials";
 import { Modal } from "@/components/Modal";
 import type { Locale } from "@/i18n/routing";
@@ -31,8 +32,6 @@ export function HomePage({ locale }: { locale: Locale }) {
     const timer = window.setTimeout(() => setModalOpen(true), 1200);
     return () => window.clearTimeout(timer);
   }, []);
-
-  const price = next?.price.replace(/^Cijena:\s|^Price:\s/, "") ?? "";
 
   return (
     <>
@@ -74,22 +73,11 @@ export function HomePage({ locale }: { locale: Locale }) {
         <img className="obj-fit-cover" src={assets.hero} alt="" />
         <div className="hero-shade" />
         <div className="hero-cta-inner">
-          <div>
+          <div className="hero-headline">
             <p className="edu-kicker hero-kicker">{home.modalKicker}</p>
             <h1>{home.hero}</h1>
           </div>
-          {next ? (
-            <div className="hero-course">
-              <p className="edu-kicker">{home.nextLabel}</p>
-              <strong>{next.level}</strong>
-              <span>
-                {next.start} · {price}
-              </span>
-              <Link href="/prijava" className="cta-btn">
-                {home.modalCta}
-              </Link>
-            </div>
-          ) : null}
+          <EducationCarousel locale={locale} />
         </div>
       </section>
 
@@ -145,9 +133,6 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="media-copy">
           <h2>{home.forYou}</h2>
           <p>{home.partner}</p>
-          <button type="button" className="ghost-btn" onClick={() => setVideoOpen(true)}>
-            {home.watch}
-          </button>
         </div>
         <button
           type="button"
@@ -193,10 +178,9 @@ export function HomePage({ locale }: { locale: Locale }) {
           <h2>{home.registerTitle}</h2>
           <p>
             {next
-              ? `${next.level} · ${next.start} · ${price} · ${next.hours}`
+              ? `${next.level} · ${next.start} · ${next.price.replace(/^Cijena:\s|^Price:\s/, "")} · ${next.hours}`
               : home.whatLead}
           </p>
-          {next ? <p>{courseDescription(locale, next)}</p> : null}
         </div>
         <Link href="/prijava" className="cta-btn">
           {home.modalCta}

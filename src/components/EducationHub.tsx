@@ -12,6 +12,7 @@ import {
 import type { Locale } from "@/i18n/routing";
 import { Modal } from "@/components/Modal";
 import { Field, FormSuccess } from "@/components/Field";
+import { OptionButtons } from "@/components/OptionButtons";
 
 const WEEKDAYS = {
   hr: ["P", "U", "S", "Č", "P", "S", "N"],
@@ -37,6 +38,7 @@ export function EducationHub({ locale }: { locale: Locale }) {
   const [selected, setSelected] = useState<EducationCard>(initial);
   const [modalOpen, setModalOpen] = useState(false);
   const [entity, setEntity] = useState<"individual" | "company">("individual");
+  const [direction, setDirection] = useState<"business" | "finance">("business");
   const [sent, setSent] = useState(false);
 
   const closeModal = useCallback(() => {
@@ -199,40 +201,46 @@ export function EducationHub({ locale }: { locale: Locale }) {
               {selected.title} · {selected.start} – {selected.end} ·{" "}
               {selected.price.replace(/^Cijena:\s|^Price:\s/, "")}
             </p>
-            <fieldset>
+            <fieldset className="reg-fieldset">
               <legend>{data.entityLabel}</legend>
-              <label>
-                <input
-                  type="radio"
-                  name="entityType"
-                  checked={entity === "individual"}
-                  onChange={() => setEntity("individual")}
-                />
-                {locale === "hr" ? "Fizička osoba" : "Individual"}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="entityType"
-                  checked={entity === "company"}
-                  onChange={() => setEntity("company")}
-                />
-                {locale === "hr" ? "Pravna osoba" : "Organisation"}
-              </label>
+              <OptionButtons
+                name="entityType"
+                value={entity}
+                onChange={setEntity}
+                options={[
+                  {
+                    value: "individual",
+                    label: locale === "hr" ? "Fizička osoba" : "Individual",
+                  },
+                  {
+                    value: "company",
+                    label: locale === "hr" ? "Pravna osoba" : "Organisation",
+                  },
+                ]}
+              />
             </fieldset>
             {entity === "individual" ? (
               <div className="reg-grid">
                 <Field label={data.firstName} name="firstName" required />
                 <Field label={data.lastName} name="lastName" required />
                 <Field label={data.userMail} name="userMail" type="email" required />
-                <label className="reg-check">
-                  <input type="checkbox" name="educationDirection" defaultChecked />
-                  {data.business}
-                </label>
-                <label className="reg-check">
-                  <input type="checkbox" name="educationDirectionFinance" />
-                  {data.finance}
-                </label>
+                <fieldset className="reg-fieldset">
+                  <legend>{data.direction}</legend>
+                  <OptionButtons
+                    name="educationDirectionChoice"
+                    value={direction}
+                    onChange={setDirection}
+                    options={[
+                      { value: "business", label: data.business },
+                      { value: "finance", label: data.finance },
+                    ]}
+                  />
+                  <input
+                    type="hidden"
+                    name={direction === "business" ? "educationDirection" : "educationDirectionFinance"}
+                    value="1"
+                  />
+                </fieldset>
               </div>
             ) : (
               <div className="reg-grid">

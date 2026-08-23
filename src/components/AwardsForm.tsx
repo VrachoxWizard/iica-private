@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { pages } from "@/content/pages";
 import { assets } from "@/content/home";
@@ -17,6 +17,9 @@ export function AwardsForm({
   const t = useTranslations("forms");
   const copy = pages[locale].awards.form;
   const [sent, setSent] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const fileInputId = useId();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,15 +63,31 @@ export function AwardsForm({
               <Field label={copy.email} name="email" type="email" required />
               <Field label={copy.oib} name="oib" required />
               <Field label={copy.address} name="address" required />
-              <div className="field-block">
-                <label htmlFor="awardDocument">{copy.file}</label>
-                <input
-                  id="awardDocument"
-                  name="awardDocument"
-                  type="file"
-                  className="file-input"
-                  aria-label={copy.file}
-                />
+              <div className="field-block file-upload-block">
+                <label htmlFor={fileInputId}>{copy.file}</label>
+                <div className="file-upload">
+                  <input
+                    ref={fileInputRef}
+                    id={fileInputId}
+                    name="awardDocument"
+                    type="file"
+                    className="file-input-native"
+                    aria-label={copy.file}
+                    onChange={(event) =>
+                      setFileName(event.target.files?.[0]?.name ?? "")
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="file-upload-btn"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    {locale === "hr" ? "Odaberi datoteku" : "Choose file"}
+                  </button>
+                  <span className="file-upload-name">
+                    {fileName || (locale === "hr" ? "Nema odabrane datoteke" : "No file chosen")}
+                  </span>
+                </div>
               </div>
               <button className="cta-btn" type="submit">
                 {t("apply")}

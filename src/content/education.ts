@@ -262,7 +262,7 @@ export function getEducation(locale: Locale) {
   return education[locale];
 }
 
-export function getNextCourse(locale: Locale, now = new Date()) {
+export function getUpcomingCourses(locale: Locale, limit = 5, now = new Date()) {
   const today = [
     now.getFullYear(),
     String(now.getMonth() + 1).padStart(2, "0"),
@@ -270,7 +270,12 @@ export function getNextCourse(locale: Locale, now = new Date()) {
   ].join("-");
   return [...getEducation(locale).courses]
     .filter((course) => course.isoStart >= today)
-    .sort((a, b) => a.isoStart.localeCompare(b.isoStart))[0];
+    .sort((a, b) => a.isoStart.localeCompare(b.isoStart))
+    .slice(0, limit);
+}
+
+export function getNextCourse(locale: Locale, now = new Date()) {
+  return getUpcomingCourses(locale, 1, now)[0];
 }
 
 export function courseDescription(locale: Locale, course: EducationCard) {

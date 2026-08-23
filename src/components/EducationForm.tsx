@@ -5,12 +5,14 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { getEducation } from "@/content/education";
 import type { Locale } from "@/i18n/routing";
+import { OptionButtons } from "@/components/OptionButtons";
 
 export function EducationForm({ locale }: { locale: Locale }) {
   const t = useTranslations("forms");
   const data = getEducation(locale);
   const [levelIndex, setLevelIndex] = useState(0);
   const [entity, setEntity] = useState<"individual" | "company">("individual");
+  const [direction, setDirection] = useState<"business" | "finance">("business");
   const [sent, setSent] = useState(false);
   const selected = data.courses[levelIndex];
 
@@ -91,24 +93,21 @@ export function EducationForm({ locale }: { locale: Locale }) {
           <div className="container">
             <div className="field">
               <label className="label">{data.entityLabel}</label>
-              <label className="wpcf7-list-item">
-                <input
-                  type="radio"
-                  name="entityType"
-                  checked={entity === "individual"}
-                  onChange={() => setEntity("individual")}
-                />
-                <span>{data.individual}</span>
-              </label>
-              <label className="wpcf7-list-item">
-                <input
-                  type="radio"
-                  name="entityType"
-                  checked={entity === "company"}
-                  onChange={() => setEntity("company")}
-                />
-                <span>{data.company}</span>
-              </label>
+              <OptionButtons
+                name="entityType"
+                value={entity}
+                onChange={setEntity}
+                options={[
+                  {
+                    value: "individual",
+                    label: locale === "hr" ? "Fizička osoba" : "Individual",
+                  },
+                  {
+                    value: "company",
+                    label: locale === "hr" ? "Pravna osoba" : "Organisation",
+                  },
+                ]}
+              />
             </div>
           </div>
 
@@ -119,14 +118,20 @@ export function EducationForm({ locale }: { locale: Locale }) {
                 <Field label={data.lastName} name="lastName" required />
                 <div className="col-12 col-md-6 mb-3">
                   <label className="label">{data.direction}</label>
-                  <label className="wpcf7-list-item">
-                    <input type="checkbox" name="educationDirection" defaultChecked />
-                    {data.business}
-                  </label>
-                  <label className="wpcf7-list-item">
-                    <input type="checkbox" name="educationDirectionFinance" />
-                    {data.finance}
-                  </label>
+                  <OptionButtons
+                    name="educationDirectionChoice"
+                    value={direction}
+                    onChange={setDirection}
+                    options={[
+                      { value: "business", label: data.business },
+                      { value: "finance", label: data.finance },
+                    ]}
+                  />
+                  <input
+                    type="hidden"
+                    name={direction === "business" ? "educationDirection" : "educationDirectionFinance"}
+                    value="1"
+                  />
                 </div>
                 <Field label={data.userMail} name="userMail" type="email" required />
               </div>

@@ -76,7 +76,7 @@ export const testimonials = [
 
 const home = {
   hr: {
-    hero: "Stručnost | počinje s kvalifikacijama",
+    hero: "Stručnost počinje s kvalifikacijama",
     aboutTitle: "O nama",
     about: [
       "Međunarodni institut za klimatske aktivnosti (IICA) prvo je udruženje stručnjaka u području klimatskih promjena i politika u Republici Hrvatskoj, kao i u regiji.",
@@ -153,9 +153,16 @@ const home = {
     ],
     modalCta: "PRIJAVI SE",
     emailPlaceholder: "Email",
+    earlyBird: "Rani popust",
+    spotsRemaining: "mjesta preostalo",
+    discountEnds: "Popust istječe za",
+    days: "d",
+    hours: "h",
+    minutes: "m",
+    seconds: "s",
   },
   en: {
-    hero: "Expertise | starts with qualifications",
+    hero: "Expertise starts with qualifications",
     aboutTitle: "About us",
     about: [
       "The International Institute for Climate Action (IICA) is the first association of experts in the field of climate change and policy in the Republic of Croatia, as well as in the region.",
@@ -232,6 +239,13 @@ const home = {
     ],
     modalCta: "SIGN UP",
     emailPlaceholder: "Email",
+    earlyBird: "Early bird discount",
+    spotsRemaining: "spots remaining",
+    discountEnds: "Discount ends in",
+    days: "d",
+    hours: "h",
+    minutes: "m",
+    seconds: "s",
   },
 } as const;
 

@@ -16,49 +16,38 @@ export default async function BoardPage({ params }: Props) {
     <>
       <PageHero title={data.copy.title} />
       <section className="section board board-section" id="tko">
-        <h2 className="is-size-2 has-text-centered mb-5">
-          <strong>{data.copy.governors}</strong>
-        </h2>
-        <div className="columns">
+        <div className="board-grid">
           {data.governors.map((member) => (
-            <div className="column is-one-third" key={member.id}>
-              <article className="card full-height board-card">
-                <div className="card-content has-background-white-ter brd-btm">
-                  <Link href={{ pathname: "/board/[slug]", params: { slug: member.slug[loc] } }}>
-                    <img className="head-pic" src={member.image} alt={member.name} />
-                    <p className="title px-5 has-text-centered">{member.name}</p>
-                  </Link>
-                </div>
-                <div className="card-content">
-                  <p className="edu-kicker">{member.role[loc]}</p>
-                  {member.bio[loc].map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
-                </div>
-              </article>
-            </div>
+            <article className="board-card" key={member.id}>
+              <Link href={{ pathname: "/board/[slug]", params: { slug: member.slug[loc] } }}>
+                <img className="head-pic" src={member.image} alt={member.name} />
+                <h3 className="board-name">{member.name}</h3>
+              </Link>
+              <p className="board-role">{member.role[loc]}</p>
+              <ul className="board-bio">
+                {member.bio[loc].map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
-        <hr />
-        <h2 className="has-text-centered">{data.copy.committee}</h2>
-        <div className="columns">
+        <hr className="board-divider" />
+        <h2 className="board-committee-title">{data.copy.committee}</h2>
+        <div className="board-grid">
           {data.committee.map((member) => (
-            <div className="column is-one-third" key={member.id}>
-              <article className="card full-height board-card">
-                <div className="card-content has-background-white-ter brd-btm">
-                  <Link href={{ pathname: "/board/[slug]", params: { slug: member.slug[loc] } }}>
-                    <img className="head-pic" src={member.image} alt={member.name} />
-                    <p className="title px-5 has-text-centered">{member.name}</p>
-                  </Link>
-                </div>
-                <div className="card-content">
-                  <p className="edu-kicker">{member.role[loc]}</p>
-                  {member.bio[loc].map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
-                </div>
-              </article>
-            </div>
+            <article className="board-card" key={member.id}>
+              <Link href={{ pathname: "/board/[slug]", params: { slug: member.slug[loc] } }}>
+                <img className="head-pic" src={member.image} alt={member.name} />
+                <h3 className="board-name">{member.name}</h3>
+              </Link>
+              <p className="board-role">{member.role[loc]}</p>
+              <ul className="board-bio">
+                {member.bio[loc].map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
       </section>
