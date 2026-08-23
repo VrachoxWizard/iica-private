@@ -40,10 +40,26 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="hero-cta hero-cta-home">
         <img className="obj-fit-cover" src={assets.hero} alt="" />
         <div className="hero-shade" />
+        <div className="hero-glow" aria-hidden="true" />
+        <div className="hero-grain" aria-hidden="true" />
         <div className="hero-cta-stack">
           <div className="hero-headline">
-            <p className="edu-kicker hero-kicker">{home.modalKicker}</p>
-            <h1>{home.hero}</h1>
+            <p className="hero-eyebrow">
+              <span className="hero-eyebrow-rule" aria-hidden="true" />
+              <span className="hero-eyebrow-text">{home.modalKicker}</span>
+              <span className="hero-eyebrow-rule" aria-hidden="true" />
+            </p>
+            <h1 className="hero-title">
+              {home.heroLead} <em>{home.heroEmphasis}</em>
+            </h1>
+            <ul className="hero-meta">
+              {home.heroMeta.map((item) => (
+                <li key={item.label}>
+                  <span className="hero-meta-value">{item.value}</span>
+                  <span className="hero-meta-label">{item.label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           <EducationCarousel locale={locale} />
         </div>

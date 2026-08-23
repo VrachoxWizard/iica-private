@@ -99,7 +99,7 @@ const coursesHrRaw = [
   {
     title: "Rujan - Prosinac 2026",
     level: "Level 2",
-    start: "14 Ruj 2025",
+    start: "14 Ruj 2026",
     end: "06 Pro 2026",
     startLabel: "Početak:",
     endLabel: "Kraj:",

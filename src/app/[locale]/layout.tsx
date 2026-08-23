@@ -11,6 +11,8 @@ import "../globals.css";
 const display = Fraunces({
   subsets: ["latin", "latin-ext"],
   variable: "--font-display",
+  style: ["normal", "italic"],
+  axes: ["SOFT", "WONK", "opsz"],
 });
 const sans = Figtree({
   subsets: ["latin", "latin-ext"],

@@ -77,6 +77,14 @@ export const testimonials = [
 const home = {
   hr: {
     hero: "Stručnost počinje s kvalifikacijama",
+    heroLead: "Stručnost počinje s",
+    heroEmphasis: "kvalifikacijama",
+    heroMeta: [
+      { value: "2012", label: "godina osnutka" },
+      { value: "8", label: "zemalja" },
+      { value: "100", label: "profesora" },
+      { value: "3", label: "nobelovca" },
+    ],
     aboutTitle: "O nama",
     about: [
       "Međunarodni institut za klimatske aktivnosti (IICA) prvo je udruženje stručnjaka u području klimatskih promjena i politika u Republici Hrvatskoj, kao i u regiji.",
@@ -161,6 +169,8 @@ const home = {
     earlyBird: "Rani popust",
     spotsRemaining: "mjesta preostalo",
     discountEnds: "Popust istječe za",
+    upcomingLabel: "Nadolazeći termini",
+    selectedLabel: "Odabrano",
     days: "d",
     hours: "h",
     minutes: "m",
@@ -168,6 +178,14 @@ const home = {
   },
   en: {
     hero: "Expertise starts with qualifications",
+    heroLead: "Expertise starts with",
+    heroEmphasis: "qualifications",
+    heroMeta: [
+      { value: "2012", label: "founded" },
+      { value: "8", label: "countries" },
+      { value: "100", label: "professors" },
+      { value: "3", label: "Nobel laureates" },
+    ],
     aboutTitle: "About us",
     about: [
       "The International Institute for Climate Action (IICA) is the first association of experts in the field of climate change and policy in the Republic of Croatia, as well as in the region.",
@@ -252,6 +270,8 @@ const home = {
     earlyBird: "Early bird discount",
     spotsRemaining: "spots remaining",
     discountEnds: "Discount ends in",
+    upcomingLabel: "Upcoming intakes",
+    selectedLabel: "Selected",
     days: "d",
     hours: "h",
     minutes: "m",
