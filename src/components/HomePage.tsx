@@ -26,9 +26,15 @@ export function HomePage({ locale }: { locale: Locale }) {
   }, []);
 
   useEffect(() => {
-    if (window.localStorage.getItem("infoMailSent") === "true") return;
-    if (window.localStorage.getItem(DISMISS_KEY) === "true") return;
-    if (window.location.search.includes("nomodal")) return;
+    // Temporarily force modal to show for testing - remove this line later
+    const forceShow = window.location.search.includes("showmodal");
+
+    if (!forceShow) {
+      if (window.localStorage.getItem("infoMailSent") === "true") return;
+      if (window.localStorage.getItem(DISMISS_KEY) === "true") return;
+      if (window.location.search.includes("nomodal")) return;
+    }
+
     const timer = window.setTimeout(() => setModalOpen(true), 1200);
     return () => window.clearTimeout(timer);
   }, []);
